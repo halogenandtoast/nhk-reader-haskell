@@ -3,6 +3,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards   #-}
 {-# LANGUAGE TemplateHaskell   #-}
+{-# LANGUAGE FlexibleContexts  #-}
 -- | Settings are centralized, as much as possible, into this file. This
 -- includes database connection settings, static file locations, etc.
 -- In addition, you can configure a number of different aspects of Yesod
@@ -16,13 +17,52 @@ import           Data.Aeson                  (Result (..), fromJSON, withObject,
                                               (.!=), (.:?))
 import           Data.FileEmbed              (embedFile)
 import           Data.Yaml                   (decodeEither')
-import           Database.Persist.Postgresql (PostgresConf)
+import           Database.Persist.Postgresql (PostgresConf(..))
+import           Control.Monad.Fail          (MonadFail)
+import           Data.String.Conversions.Monomorphic (toStrictByteString)
 import           Language.Haskell.TH.Syntax  (Exp, Name, Q)
 import           Network.Wai.Handler.Warp    (HostPreference)
 import           Yesod.Default.Config2       (applyEnvValue, configSettingsYml)
 import           Yesod.Default.Util          (WidgetFileSettings,
                                               widgetFileNoReload,
                                               widgetFileReload)
+
+import URI.ByteString
+    ( Authority(..)
+    , Host(..)
+    , Port(..)
+    , URIRef(..)
+    , UserInfo(..)
+    , Scheme(..)
+    , parseURI
+    , strictURIParserOptions
+    )
+
+import qualified Data.ByteString.Char8 as Char8
+
+fromDatabaseUrl :: (MonadFail m) => Int -> Text -> m PostgresConf
+fromDatabaseUrl size url = do
+  uri <- abortLeft $ parseURI strictURIParserOptions $ toStrictByteString url
+  auth <- abortNothing "authority" $ uriAuthority uri
+  userInfo <- abortNothing "user info" $ authorityUserInfo auth
+  port <- abortNothing "port" $ authorityPort auth
+  dbName <- abortNothing "path" $ snd <$> uncons (uriPath uri)
+  unless (schemeBS (uriScheme uri) == "postgres") $ fail "DATABASE_URL has unknown scheme"
+  return PostgresConf
+    { pgConnStr =
+        "user=" <> uiUsername userInfo
+        <> " password=" <> uiPassword userInfo
+        <> " host=" <> hostBS (authorityHost auth)
+        <> " port=" <> Char8.pack (show $ portNumber port)
+        <> " dbname=" <> dbName
+    , pgPoolSize = size
+    }
+
+abortLeft :: (MonadFail m, Show e) => Either e b -> m b
+abortLeft = either (fail . ("DATABASE_URL failed to parse: " <>) . show) return
+
+abortNothing :: MonadFail m => String -> Maybe a -> m a
+abortNothing s = maybe (fail $ "DATABASE_URL is missing " <> s) return
 
 -- | Runtime settings to configure this application. These settings can be
 -- loaded from various sources: defaults, environment variables, config files,
@@ -73,7 +113,8 @@ instance FromJSON AppSettings where
                 False
 #endif
         appStaticDir              <- o .: "static-dir"
-        appDatabaseConf           <- o .: "database"
+        poolSize                  <- o .: "database-pool-size"
+        appDatabaseConf           <- fromDatabaseUrl poolSize =<< (o .: "database-url")
         appRoot                   <- o .:? "approot"
         appHost                   <- fromString <$> o .: "host"
         appPort                   <- o .: "port"
