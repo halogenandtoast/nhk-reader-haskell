@@ -1,0 +1,12 @@
+NewsStory sql=news_stories
+    newsId Slug
+    title Text
+    titleWithRuby Text
+    body Text Maybe
+    url Text
+    publishedAt UTCTime
+    fetched Bool
+    image Text Maybe
+    data Text
+    UniqueNewsId newsId
+    deriving Typeable

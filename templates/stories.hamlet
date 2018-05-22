@@ -1,0 +1,4 @@
+$forall Entity sid story <- stories
+  <div>#{preEscapedToHtml $ newsStoryTitleWithRuby story}
+
+^{widget}
