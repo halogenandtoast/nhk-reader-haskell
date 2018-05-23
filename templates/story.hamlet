@@ -1,0 +1,4 @@
+<h1>#{preEscapedToHtml $ newsStoryTitleWithRuby story}
+
+$maybe body <- newsStoryBody story
+  #{preEscapedToHtml body}

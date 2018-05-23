@@ -4,3 +4,4 @@
 /robots.txt RobotsR GET
 
 / StoriesR GET
+/story/#Slug StoryR GET

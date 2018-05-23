@@ -1,4 +1,5 @@
 $forall Entity sid story <- stories
-  <div>#{preEscapedToHtml $ newsStoryTitleWithRuby story}
+  <div>
+    <a href=@{StoryR $ newsStoryNewsId story}>#{preEscapedToHtml $ newsStoryTitleWithRuby story}
 
 ^{widget}

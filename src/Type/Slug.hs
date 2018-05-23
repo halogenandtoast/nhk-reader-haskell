@@ -2,7 +2,7 @@
 
 module Type.Slug where
 
-import Data.Text
+import ClassyPrelude.Yesod
 import Database.Persist.Sql
 
-newtype Slug = Slug { unSlug :: Text } deriving (PersistField, PersistFieldSql)
+newtype Slug = Slug { unSlug :: Text } deriving (Eq, Show, Read, PathPiece, PersistField, PersistFieldSql)
