@@ -1,6 +1,22 @@
 $(function() {
-    $(".lookup").click(function() {
+    $(".lookup").each(function(idx, el) {
         var term = $($(this).html().replace(/<rt>.*<\/rt>/, "")).text();
-        window.location = "http://jisho.org/search/" + term;
+        var dictionaryLink = "http://jisho.org/search/" + term;
+        var a = $("<a>").addClass("lookup").attr("href", dictionaryLink).html($(this).html());
+        $(this).replaceWith(a);
+    });
+
+    $("[data-role=toggle-furigana]").click(function() {
+      $("rt").toggle();
+      return false;
+    });
+
+    $("ruby").each(function(idx, el) {
+      $(el).attr("data-hiragana", $(el).find("rt").text());
+    });
+
+    $("[data-role=toggle-kanji]").click(function() {
+      $("ruby").toggleClass("hide-kanji");
+      return false;
     });
 });
