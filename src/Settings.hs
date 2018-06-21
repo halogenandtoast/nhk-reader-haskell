@@ -84,6 +84,7 @@ data AppSettings = AppSettings
     { appStaticDir              :: String
     -- ^ Directory from which to serve static files.
     , appDatabaseConf           :: PostgresConf
+    , appRedisConf              :: R.ConnectInfo
     -- ^ Configuration settings for accessing the database.
     , appRoot                   :: Maybe Text
     -- ^ Base for all generated URLs. If @Nothing@, determined
@@ -127,6 +128,7 @@ instance FromJSON AppSettings where
 #endif
         appStaticDir              <- o .: "static-dir"
         poolSize                  <- o .: "database-pool-size"
+        appRedisConf              <- fromMemoryStoreUrl =<< (o .: "redis-url")
         appDatabaseConf           <- fromDatabaseUrl poolSize =<< (o .: "database-url")
         appRoot                   <- o .:? "approot"
         appHost                   <- fromString <$> o .: "host"

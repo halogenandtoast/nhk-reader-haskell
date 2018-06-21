@@ -58,7 +58,7 @@ makeFoundation :: AppSettings -> IO App
 makeFoundation appSettings = do
     -- Some basic initializations: HTTP connection manager, logger, and static
     -- subsite.
-    appRedisConn <- R.connect R.defaultConnectInfo
+    appRedisConn <- R.connect $ appRedisConf appSettings
     appHttpManager <- getGlobalManager
     appLogger <- newStdoutLoggerSet defaultBufSize >>= makeYesodLogger
     appStatic <-
