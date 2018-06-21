@@ -27,6 +27,14 @@ stack exec -- yesod devel
 
 As your code changes, your site will be automatically recompiled and redeployed to localhost.
 
+## Deployment
+
+```
+docker build . -t nhk
+heroku container:push web
+heroku container:release web
+```
+
 ## Tests
 
 ```
