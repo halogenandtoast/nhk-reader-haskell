@@ -1,7 +1,13 @@
-<h1>#{preEscapedToHtml $ newsStoryTitleWithRuby story}
+<header>
+  <nav>
+    <ul .back_nav>
+      <li>
+        <a href=@{StoriesR}>Back
+    <ul .options>
+      <li>
+        <a href="#" data-role="toggle-furigana">Toggle Furigana
 
-$maybe body <- newsStoryBody story
-  <article .story>
+<article .story>
   <h1>#{preEscapedToHtml $ newsStoryTitleWithBr story}
 
   $maybe image <- newsStoryImage story
@@ -9,15 +15,13 @@ $maybe body <- newsStoryBody story
       <img src="data:image/jpg;base64,#{image}">
 
   <div .story>
-    $maybe body <- newsStoryBody story
+    $maybe body <- sanitizedBody story
       #{preEscapedToHtml body}
     $nothing
-      Unable to fetch story contents
+      Unable to fetch story contents: #{newsStoryUrl story}
 
 <footer>
   <nav>
     <ul>
-      <li>
-        <a href=@{StoriesR}>Back
       <li>
         <a href=#{newsStoryUrl story} .story__link--original>View Original
