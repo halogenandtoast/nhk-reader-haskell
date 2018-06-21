@@ -15,6 +15,8 @@ body {
   font-family: sans-serif;
   background-color: #{backgroundColor};
   color: #{foregroundColor};
+  margin: 0;
+  padding: 0;
 }
 
 a { color: #{linkColor}; }
@@ -128,4 +130,19 @@ nav.pagination {
 .lookup {
   text-decoration: underline;
   cursor: pointer;
+}
+
+a.lookup {
+  color: #{foregroundColor};
+}
+
+ruby.hide-kanji {
+  visibility: hidden;
+  font-size: 1px;
+  letter-spacing: -1px;
+}
+
+ruby.hide-kanji::before {
+  visibility: visible;
+  content: attr(data-hiragana string);
 }
