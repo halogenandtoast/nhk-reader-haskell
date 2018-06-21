@@ -16,7 +16,7 @@ fetchedNewsStory :: Slug -> DB NewsStory
 fetchedNewsStory slug = do
     Entity storyId story <- getBy404 $ UniqueNewsId slug
     if newsStoryFetched story
-       then  return story
+       then return story
        else do
          image <- liftIO $ fetchStoryBase64ImageFromNhk story
          body <- liftIO $ fetchStoryBodyFromNhk story
