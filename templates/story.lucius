@@ -1,0 +1,29 @@
+header {
+  position: fixed;
+  top: 0;
+  background: white;
+  width: 100%;
+  margin: 0;
+  padding: 5px 10px;
+  text-align: right;
+  box-sizing: border-box;
+  border-bottom: 1px solid #D8D8D8;
+  box-shadow: 0 1px 1px 0 rgba(140,140,140,.15);
+  font-size: 0.8em;
+}
+
+nav { margin: 0; padding: 0; }
+
+header ul { list-style-type: none; margin: 0; padding: 0; }
+header li { display: inline; margin: 0; padding: 0;}
+
+header a { color: black !important; text-decoration: none; }
+
+article { padding-top: 10px; }
+#newsarticle img {
+  display: block;
+  margin: 0 auto !important;
+}
+
+.back_nav { float: left; }
+.options { float: right; }
