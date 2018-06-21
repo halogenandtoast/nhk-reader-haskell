@@ -1,10 +1,13 @@
-$forall (date, group) <- groups
-  <div>
-    <h2>#{show date}
-    <ul>
-      $forall story <- group
-        <li>
-          <a href=@{StoryR $ newsStoryNewsId story}>#{preEscapedToHtml $ newsStoryTitleWithRuby story}
+<div .stories>
+  <h1>NHK Reader
 
-<div>
-  ^{widget}
+  $forall (date, group) <- groups
+    <div .stories__group>
+      <h2>#{show date}
+      <ul .stories__list>
+        $forall story <- group
+            <li .stories__list__item>
+              <a href=@{StoryR $ newsStoryNewsId story}>
+                #{preEscapedText $ newsStoryTitleWithRuby story}
+  <div .pagination>
+    ^{widget}
