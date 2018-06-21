@@ -1,7 +1,7 @@
 <h1>#{preEscapedToHtml $ newsStoryTitleWithRuby story}
 
 $maybe body <- newsStoryBody story
-  #<article .story>
+  <article .story>
   <h1>#{preEscapedToHtml $ newsStoryTitleWithBr story}
 
   $maybe image <- newsStoryImage story

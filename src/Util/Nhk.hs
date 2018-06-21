@@ -64,7 +64,7 @@ fetchStoryBodyFromNhk story = do
     response <- decodeUtf8 <$> getNhkResource url
     return $ renderWithDictionaryLinks <$> response ^? newsArticle
   where
-    newsArticle = html . allAttributed(ix "id" . only "newsarticle")
+    newsArticle = html . allAttributed(ix "id" . filtered (`elem` ["newsarticle", "js-article-body"]))
     url = (unpack . newsStoryUrl) story
     renderWithDictionaryLinks = lazyTextFun replaceDictionaryLinks . render
     replaceDictionaryLinks =  regexReplace "</a>" "</span>" . regexReplace "<a[^>]*>" "<span class=\"lookup\">"

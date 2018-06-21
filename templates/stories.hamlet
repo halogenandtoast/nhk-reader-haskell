@@ -8,6 +8,6 @@
         $forall story <- group
             <li .stories__list__item>
               <a href=@{StoryR $ newsStoryNewsId story}>
-                #{preEscapedText $ newsStoryTitleWithRuby story}
+                #{preEscapedToHtml $ newsStoryTitleWithRuby story}
   <div .pagination>
     ^{widget}
