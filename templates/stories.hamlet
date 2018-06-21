@@ -1,5 +1,10 @@
-$forall Entity sid story <- stories
+$forall (date, group) <- groups
   <div>
-    <a href=@{StoryR $ newsStoryNewsId story}>#{preEscapedToHtml $ newsStoryTitleWithRuby story}
+    <h2>#{show date}
+    <ul>
+      $forall story <- group
+        <li>
+          <a href=@{StoryR $ newsStoryNewsId story}>#{preEscapedToHtml $ newsStoryTitleWithRuby story}
 
-^{widget}
+<div>
+  ^{widget}

@@ -18,6 +18,7 @@ import           Data.Aeson                  (Result (..), fromJSON, withObject,
 import           Data.FileEmbed              (embedFile)
 import           Data.Yaml                   (decodeEither')
 import           Database.Persist.Postgresql (PostgresConf(..))
+import qualified Database.Redis as R
 import           Control.Monad.Fail          (MonadFail)
 import           Data.String.Conversions.Monomorphic (toStrictByteString)
 import           Language.Haskell.TH.Syntax  (Exp, Name, Q)
@@ -39,6 +40,18 @@ import URI.ByteString
     )
 
 import qualified Data.ByteString.Char8 as Char8
+
+fromMemoryStoreUrl :: (MonadFail m) => Text -> m R.ConnectInfo
+fromMemoryStoreUrl url = do
+  uri <- abortLeft $ parseURI strictURIParserOptions $ toStrictByteString url
+  auth <- abortNothing "authority" $ uriAuthority uri
+  port <- abortNothing "port" $ authorityPort auth
+  let host = authorityHost auth
+  unless (schemeBS (uriScheme uri) == "redis") $ fail "REDIS_URL has unknown scheme"
+  return R.defaultConnectInfo { R.connectHost = Char8.unpack . hostBS $ host
+                              , R.connectPort = R.PortNumber . fromIntegral . portNumber $ port
+                              , R.connectAuth = uiPassword <$> (authorityUserInfo auth)
+                              }
 
 fromDatabaseUrl :: (MonadFail m) => Int -> Text -> m PostgresConf
 fromDatabaseUrl size url = do

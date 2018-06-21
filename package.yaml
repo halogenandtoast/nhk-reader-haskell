@@ -49,6 +49,13 @@ dependencies:
 - yesod-paginator
 - string-conversions
 - uri-bytestring
+- hedis
+- network
+- base64-bytestring
+- lens
+- hledger-lib
+- taggy
+- taggy-lens
 
 # The library contains all of our application code. The executable
 # defined below is just a thin wrapper.

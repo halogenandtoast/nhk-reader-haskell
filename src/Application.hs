@@ -21,6 +21,7 @@ module Application
     ) where
 
 import Control.Monad.Logger                 (liftLoc, runLoggingT)
+import qualified Database.Redis as R
 import Database.Persist.Postgresql          (createPostgresqlPool, pgConnStr,
                                              pgPoolSize, runSqlPool)
 import Import
@@ -57,6 +58,7 @@ makeFoundation :: AppSettings -> IO App
 makeFoundation appSettings = do
     -- Some basic initializations: HTTP connection manager, logger, and static
     -- subsite.
+    appRedisConn <- R.connect R.defaultConnectInfo
     appHttpManager <- getGlobalManager
     appLogger <- newStdoutLoggerSet defaultBufSize >>= makeYesodLogger
     appStatic <-

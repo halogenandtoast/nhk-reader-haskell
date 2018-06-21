@@ -12,6 +12,7 @@ module Foundation where
 
 import Import.NoFoundation
 import Database.Persist.Sql (ConnectionPool, runSqlPool)
+import qualified Database.Redis as R
 import Text.Hamlet          (hamletFile)
 import Text.Jasmine         (minifym)
 import Control.Monad.Logger (LogSource)
@@ -32,6 +33,7 @@ data App = App
     { appSettings    :: AppSettings
     , appStatic      :: Static -- ^ Settings for static file serving.
     , appConnPool    :: ConnectionPool -- ^ Database connection pool.
+    , appRedisConn   :: R.Connection
     , appHttpManager :: Manager
     , appLogger      :: Logger
     }

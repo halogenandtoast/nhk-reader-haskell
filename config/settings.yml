@@ -28,6 +28,7 @@ ip-from-header: "_env:IP_FROM_HEADER:false"
 # NB: If you need a numeric value (e.g. 123) to parse as a String, wrap it in single quotes (e.g. "_env:PGPASS:'123'")
 # See https://github.com/yesodweb/yesod/wiki/Configuration#parsing-numeric-values-as-strings
 
+redis-url: "_env:REDIS_URL:redis://localhost:6379"
 database-url: "_env:DATABASE_URL:postgres://yesod:yesod@localhost:5432/nhk_reader_development"
 database-pool-size: "_env:DB_POOL:10"
 
