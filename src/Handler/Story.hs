@@ -7,7 +7,6 @@ module Handler.Story where
 
 import Import
 import Database.Persist
-import Yesod.Form.Bootstrap3 (BootstrapFormLayout (..), renderBootstrap3)
 import Text.Julius (RawJS (..))
 import Text.Blaze.Html (preEscapedToHtml, toMarkup)
 import Yesod.Paginator

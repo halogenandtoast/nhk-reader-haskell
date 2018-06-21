@@ -20,4 +20,4 @@ $maybe body <- newsStoryBody story
       <li>
         <a href=@{StoriesR}>Back
       <li>
-        <a href=#{newsStoryUrl story} .story__link--original>View Original{preEscapedToHtml body}
+        <a href=#{newsStoryUrl story} .story__link--original>View Original

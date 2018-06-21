@@ -11,7 +11,6 @@ import Util.Redis
 import Model.Story
 import Database.Persist
 import qualified Database.Redis as R
-import Yesod.Form.Bootstrap3 (BootstrapFormLayout (..), renderBootstrap3)
 import Text.Julius (RawJS (..))
 import Text.Blaze.Html (preEscapedToHtml)
 import Yesod.Paginator
