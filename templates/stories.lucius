@@ -1,0 +1,16 @@
+ul.pagination {
+  list-style: none;
+  margin: 20px auto;
+  text-align: center;
+  display: block;
+  font-size: 1.5em;
+}
+
+ul.pagination li {
+  display: inline;
+  margin: 0 10px;
+}
+
+ul.pagination li.disabled a {
+  color: #AAA;
+}

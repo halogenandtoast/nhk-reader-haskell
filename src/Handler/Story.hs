@@ -12,10 +12,12 @@ import Text.Julius (RawJS (..))
 import Text.Blaze.Html (preEscapedToHtml, toMarkup)
 import Yesod.Paginator
 import Type.Slug
+import Model.Story
+import Helper.Story
 
 getStoryR :: Slug -> Handler Html
 getStoryR slug = do
-  Entity sid story <- runDB $ getBy404 $ UniqueNewsId slug
-  defaultLayout $ do
-      setTitle $ "NhkReader: " ++ (toMarkup $ newsStoryTitle story)
+    story <- runDB $ fetchedNewsStory slug
+    defaultLayout $ do
+      setTitleI (newsStoryTitle story)
       $(widgetFile "story")

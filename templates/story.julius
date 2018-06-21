@@ -1,0 +1,6 @@
+$(function() {
+    $(".lookup").click(function() {
+        var term = $($(this).html().replace(/<rt>.*<\/rt>/, "")).text();
+        window.location = "http://jisho.org/search/" + term;
+    });
+});

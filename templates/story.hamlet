@@ -1,4 +1,23 @@
 <h1>#{preEscapedToHtml $ newsStoryTitleWithRuby story}
 
 $maybe body <- newsStoryBody story
-  #{preEscapedToHtml body}
+  #<article .story>
+  <h1>#{preEscapedToHtml $ newsStoryTitleWithBr story}
+
+  $maybe image <- newsStoryImage story
+    <div .story__image>
+      <img src="data:image/jpg;base64,#{image}">
+
+  <div .story>
+    $maybe body <- newsStoryBody story
+      #{preEscapedToHtml body}
+    $nothing
+      Unable to fetch story contents
+
+<footer>
+  <nav>
+    <ul>
+      <li>
+        <a href=@{StoriesR}>Back
+      <li>
+        <a href=#{newsStoryUrl story} .story__link--original>View Original{preEscapedToHtml body}
